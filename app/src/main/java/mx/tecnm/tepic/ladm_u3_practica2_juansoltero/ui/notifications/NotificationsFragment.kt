@@ -13,6 +13,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.get
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,10 +25,11 @@ import java.time.LocalDateTime
 
 class NotificationsFragment : Fragment() {
     var filtro = "NOMBRE"
-    val spinner = arrayOf("Nombre", "Licencia","Domicilio")
+    val spinner = arrayOf("Nombre", "Licencia","Domicilio","Modelo","Marca")
     val arreglo = ArrayList<String>()
     val arreglo2 = ArrayList<String>()
     val arreglo3 = ArrayList<String>()
+    val arreglo5 = ArrayList<String>()
     val arreglo4 = ArrayList<String>()
     var listaID = ArrayList<String>()
     var listaID2 = ArrayList<String>()
@@ -73,10 +76,53 @@ class NotificationsFragment : Fragment() {
                 if(binding.spinner1.selectedItemPosition == 2){
                     filtro = "DOMICILIO"
                 }
+                if(binding.spinner1.selectedItemPosition == 3){
+                    filtro = "MODELO"
+                }
+                if(binding.spinner1.selectedItemPosition == 4){
+                    filtro = "MARCA"
+                }
             }
 
         }
         //
+        //-----------------------
+        //---------mostrar en listview2
+        var lista1 = FirebaseFirestore.getInstance()
+            .collection("AUTOMOVIL")
+            .addSnapshotListener { query, error ->
+                if(error!=null){
+                    //SI HUBO ERROR!
+                    AlertDialog.Builder(requireContext())
+                        .setMessage(error.message)
+                        .show()
+                    return@addSnapshotListener
+                }
+                arreglo3.clear()
+                arreglo5.clear()
+                arreglo4.clear()
+                listaID2.clear()
+
+
+                for(documento in query!!){
+                    var cadena ="${documento.getString("MODELO")}" +
+                            " -- ${documento.getString("MARCA")} -- ${documento.getLong("KILOMETRAGE")}"
+                    var cadena2 = "${documento.id.toString()}" +
+                            " -- ${documento.getString("MODELO")}" +
+                            " -- ${documento.getString("MARCA")} -- ${documento.getLong("KILOMETRAGE")}"
+                    arreglo3.add(cadena)
+                    arreglo5.add(cadena2)
+
+                    listaID2.add(documento.id.toString())
+                }
+                binding.lista2.adapter= ArrayAdapter<String>(requireContext(),
+                    R.layout.simple_list_item_1,arreglo3)
+                binding.lista2.setOnItemClickListener { adapterView, view, posicion, l ->
+                    dialogoselecciona(posicion)
+                }
+            }
+
+        //-----------------------
         //---------mostrar en listview
         var lista2 = FirebaseFirestore.getInstance()
             .collection("ARRENDAMIENTO")
@@ -93,22 +139,32 @@ class NotificationsFragment : Fragment() {
                 listaID.clear()
                 arreglofiltro.clear()
 
-                for(documento in query!!){
-                        var cadena = "${documento.getString("NOMBRE")}" +
-                                " -- ${documento.getString("DOMICILIO")} " +
-                                " -- ${documento.getString("FECHA")}" +
-                                " -- ${documento.getString("LICENCIACOND")}"
-                        arreglo.add(cadena)
+                        for (documento in query!!) {
+                            var cadena = "${documento.getString("NOMBRE")}" +
+                                    " -- ${documento.getString("DOMICILIO")} " +
+                                    " -- ${documento.getString("FECHA")}" +
+                                    " -- ${documento.getString("LICENCIACOND")}"
+                                    //" -- ${query2.get.getString("FECHA")}" +
+                            (0..arreglo5.size-1).forEach{
+                                var asist = arreglo5.get(it).toString().split(" -- ")
+                                if (documento.getString("IDAUTO")==asist[0]){
+                                    cadena = cadena + " -- ${asist[1]} -- ${asist[2]}"
+                                }
+                            }
+                            arreglo.add(cadena)
+                            //arreglo5.add(cadena)
 
-                        listaID.add(documento.id.toString())
+                            listaID.add(documento.id.toString())
 
-                }
+                        }
+
                 binding.lista.adapter= ArrayAdapter<String>(requireContext(),
                     R.layout.simple_list_item_1,arreglo)
                 binding.lista.setOnItemClickListener { adapterView, view, posicion, l ->
                     dialogoEliminaActualiza(posicion)
                 }
             }
+
         binding.todos.setOnClickListener {
             binding.lista.setAdapter(ArrayAdapter<String>(requireContext(),
                 R.layout.simple_list_item_1,arreglo));
@@ -138,7 +194,6 @@ class NotificationsFragment : Fragment() {
                     } else {
                         arreglofiltro.add(arreglo.get(it))
                     }
-
                 }
                 if (filtro == "DOMICILIO") {
                     var cad = arreglo.get(it).split(" -- ")
@@ -149,43 +204,28 @@ class NotificationsFragment : Fragment() {
                     }
 
                 }
+                if (filtro == "MODELO") {
+                    var cad = arreglo.get(it).split(" -- ")
+
+                    if (binding.clave.text.toString() != cad.get(4)) {
+                    }else {
+                        arreglofiltro.add(arreglo.get(it))
+                    }
+                }
+                if (filtro == "MARCA") {
+                    var cad = arreglo.get(it).split(" -- ")
+
+                    if (binding.clave.text.toString() != cad.get(5)) {
+                    }else {
+                        arreglofiltro.add(arreglo.get(it))
+                    }
+                }
             }
             binding.lista.setAdapter(ArrayAdapter<String>(requireContext(),
                 R.layout.simple_list_item_1,arreglofiltro));
         }
 
-        //-----------------------
-        //---------mostrar en listview2
-        var lista1 = FirebaseFirestore.getInstance()
-            .collection("AUTOMOVIL")
-            .addSnapshotListener { query, error ->
-                if(error!=null){
-                    //SI HUBO ERROR!
-                    AlertDialog.Builder(requireContext())
-                        .setMessage(error.message)
-                        .show()
-                    return@addSnapshotListener
-                }
-                arreglo3.clear()
-                arreglo4.clear()
-                listaID2.clear()
 
-
-                for(documento in query!!){
-                        var cadena = "${documento.getString("MODELO")}" +
-                                " -- ${documento.getString("MARCA")} -- ${documento.getLong("KILOMETRAGE")}"
-                        arreglo3.add(cadena)
-
-                        listaID2.add(documento.id.toString())
-                }
-                binding.lista2.adapter= ArrayAdapter<String>(requireContext(),
-                    R.layout.simple_list_item_1,arreglo3)
-                binding.lista2.setOnItemClickListener { adapterView, view, posicion, l ->
-                    dialogoselecciona(posicion)
-                }
-            }
-
-        //-----------------------
 
         binding.opciones.setOnClickListener {
             binding.lista2.visibility = View.VISIBLE
@@ -197,14 +237,14 @@ class NotificationsFragment : Fragment() {
 
         return root
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun insertar() {
         val baseRemota = FirebaseFirestore.getInstance()
         val current = LocalDateTime.now()
+        val asist2 = current.toString().split("T")
         val datos = hashMapOf(
             "NOMBRE" to binding.nombre.text.toString(),
-            "FECHA" to current.toString(),
+            "FECHA" to asist2.get(0),
             "LICENCIACOND" to binding.lic.text.toString(),
             "DOMICILIO" to binding.dom.text.toString(),
             "IDAUTO" to binding.autom.text.toString(),
