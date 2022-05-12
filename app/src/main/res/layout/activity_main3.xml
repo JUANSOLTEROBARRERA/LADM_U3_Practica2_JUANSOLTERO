@@ -86,13 +86,52 @@
         android:id="@+id/actualizar"
 
         />
+    <TextView
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/titulo5"
+        android:text="Auto: "
+        android:textSize="20dp"
+        android:layout_toLeftOf="@+id/autom"
+        android:layout_below="@id/actualizar"
+        android:textAlignment="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_centerHorizontal="true"
+        />
+    <TextView
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/autom"
+        android:text="Selecciona Auto"
+        android:textSize="12dp"
+        android:layout_below="@id/actualizar"
+        android:textAlignment="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_centerHorizontal="true"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MOSTRAR OPCIONES"
+        android:layout_below="@id/autom"
+        android:id="@+id/opciones"
+        android:layout_centerHorizontal="true"
+        />
+
+    <ListView
+        android:id="@+id/lista"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/opciones" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:text="REGRESAR"
-        android:layout_below="@id/actualizar"
+        android:layout_below="@id/lista"
         android:id="@+id/regresar"
         />
 </RelativeLayout>
