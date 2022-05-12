@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ARRENDAMIENTO DE AUTOMÓVILES"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:id="@+id/titulo"
+        android:layout_marginTop="30dp"
+        android:textAlignment="center"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="BIG HERO"
+        android:textSize="20dp"
+        android:layout_below="@+id/titulo"
+        android:background="#FF0000"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:id="@+id/titulo2"
+        android:textAlignment="center"
+        />
+
+    <ImageView
+        android:id="@+id/baymax"
+        android:layout_width="247dp"
+        android:layout_height="238dp"
+        android:layout_below="@+id/titulo2"
+        android:layout_marginTop="77dp"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/baymax" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="by Juan Antonio Soltero Barrera"
+        android:layout_marginTop="50dp"
+        android:layout_below="@id/baymax"
+        android:id="@+id/nombre"
+        android:textAlignment="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ahora con Firebase!"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/nombre"
+        android:textAlignment="center"/>
+
+</RelativeLayout>
