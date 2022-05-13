@@ -45,6 +45,7 @@ class MainActivity3 : AppCompatActivity() {
                 binding.nombre.setText(it.getString("NOMBRE"))
                 binding.dom.setText(it.getString("DOMICILIO"))
                 binding.lic.setText(it.getString("LICENCIACOND"))
+                binding.autom.setText(it.getString("IDAUTO"))
             }
             .addOnFailureListener {
                 AlertDialog.Builder(this)
