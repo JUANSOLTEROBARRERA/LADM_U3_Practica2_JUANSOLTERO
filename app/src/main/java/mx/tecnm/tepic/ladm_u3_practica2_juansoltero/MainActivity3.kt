@@ -24,7 +24,14 @@ class MainActivity3 : AppCompatActivity() {
         binding = ActivityMain3Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        AlertDialog.Builder(this)
+            .setMessage("BIENVENIDO" +
+                    "   Al inicio de esta ventana se encuentra un formulario inicial que es para " +
+                    " actualizar un arrendamiento, deberás cambiar los datos que quieras actualizar (para actualizar el auto que " +
+                    " será rentado es necesario dar clic en mostrar opciones y dar clic sobre uno" +
+                    " de los autos disponibles en la lista para seleccionarlo). Damos clic sobre el" +
+                    " botón actualizar y sería todo.")
+            .show()
         binding.opciones.setOnClickListener {
             binding.lista.visibility =  View.VISIBLE
         }

@@ -15,7 +15,12 @@ class MainActivity2 : AppCompatActivity() {
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        AlertDialog.Builder(this)
+            .setMessage("BIENVENIDO" +
+                    "   Al inicio de esta ventana se encuentra un formulario inicial que es para " +
+                    " actualizar un auto, deberás cambiar los datos que quieras actualizar . Damos " +
+                    " clic sobre el botón actualizar y sería todo.")
+            .show()
         idElegido = intent.extras!!.getString("idelegido")!!
         val baseRemota = FirebaseFirestore.getInstance()
         baseRemota.collection("AUTOMOVIL")

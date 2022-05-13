@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import mx.tecnm.tepic.ladm_u3_practica2_juansoltero.MainActivity2
 import mx.tecnm.tepic.ladm_u3_practica2_juansoltero.databinding.FragmentDashboardBinding
+import java.lang.NullPointerException
 
 class DashboardFragment : Fragment() {
     var listaID = ArrayList<String>()
@@ -45,6 +46,19 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+
+
+        AlertDialog.Builder(requireContext())
+            .setMessage("BIENVENIDO" +
+                    "   Al inicio de esta ventana se encuentra un formulario inicial que es para " +
+                    "insertar un nuevo automovil, al llenar los campos y dar clic en insertar " +
+                    "éste se agregará a la base de datos y al listview. En la parte inferior podemos " +
+                    "filtrar los autos que han sido agregados, se selecciona en el DropDown el " +
+                    "campo por el que se desea filtrar y en el campo Clave lo que queremos buscar, " +
+                    "si queremos quitar los filtros damos clic en mostrar todos. " +
+                    "Al dar clic sobre un elemento de la lista se despliega un dialogo que nos dará la " +
+                    "opción de eliminar, actualizar y cancelar.")
+            .show()
         //CODIGO--------
         //CODIGO DE SPINNER
         val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item,spinner)
@@ -99,13 +113,17 @@ class DashboardFragment : Fragment() {
                         arreglo.add(cadena)
 
                         listaID.add(documento.id.toString())
+                        try {
+                            binding.lista.adapter = ArrayAdapter<String>(
+                                requireContext(),
+                                R.layout.simple_list_item_1, arreglo
+                            )
+                            binding.lista.setOnItemClickListener { adapterView, view, posicion, l ->
+                                dialogoEliminaActualiza(posicion)
+                            }
+                        }catch (err:NullPointerException){
 
-                        binding.lista.adapter= ArrayAdapter<String>(requireContext(),
-                            R.layout.simple_list_item_1,arreglo)
-                        binding.lista.setOnItemClickListener { adapterView, view, posicion, l ->
-                            dialogoEliminaActualiza(posicion)
-
-                    }
+                        }
                 }
 
             }

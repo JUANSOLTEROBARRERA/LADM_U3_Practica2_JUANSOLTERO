@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import mx.tecnm.tepic.ladm_u3_practica2_juansoltero.MainActivity2
 import mx.tecnm.tepic.ladm_u3_practica2_juansoltero.MainActivity3
 import mx.tecnm.tepic.ladm_u3_practica2_juansoltero.databinding.FragmentNotificationsBinding
+import java.lang.NullPointerException
 import java.time.LocalDateTime
 
 class NotificationsFragment : Fragment() {
@@ -57,6 +58,21 @@ class NotificationsFragment : Fragment() {
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+
+
+        AlertDialog.Builder(requireContext())
+            .setMessage("BIENVENIDO" +
+                    "   Al inicio de esta ventana se encuentra un formulario inicial que es para " +
+                    "insertar un nuevo arrendamiento, al llenar los campos y dar clic en insertar " +
+                    "éste se agregará a la base de datos y al listview (para insertar el auto que " +
+                    "será rentado es necesario dar clic en mostrar opciones y dar clic sobre uno" +
+                    "de los autos disponibles en la lista para seleccionarlo). En la parte inferior podemos " +
+                    "filtrar los arrendamientos que han sido agregados, se selecciona en el DropDown el " +
+                    "campo por el que se desea filtrar y en el campo Clave lo que queremos buscar, " +
+                    "si queremos quitar los filtros damos clic en mostrar todos. " +
+                    "Al dar clic sobre un elemento de la lista se despliega un dialogo que nos dará la " +
+                    "opción de eliminar, actualizar y cancelar.")
+            .show()
         binding.lista2.visibility = View.GONE
         //codigo spinner
         val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item,spinner)
@@ -115,10 +131,17 @@ class NotificationsFragment : Fragment() {
 
                     listaID2.add(documento.id.toString())
                 }
-                binding.lista2.adapter= ArrayAdapter<String>(requireContext(),
-                    R.layout.simple_list_item_1,arreglo3)
-                binding.lista2.setOnItemClickListener { adapterView, view, posicion, l ->
-                    dialogoselecciona(posicion)
+                try {
+                    binding.lista2.adapter = ArrayAdapter<String>(
+                        requireContext(),
+                        R.layout.simple_list_item_1, arreglo3
+                    )
+
+                    binding.lista2.setOnItemClickListener { adapterView, view, posicion, l ->
+                        dialogoselecciona(posicion)
+                    }
+                }catch (err:NullPointerException){
+
                 }
             }
 
@@ -157,11 +180,14 @@ class NotificationsFragment : Fragment() {
                             listaID.add(documento.id.toString())
 
                         }
+                try{
+                    binding.lista.adapter= ArrayAdapter<String>(requireContext(),
+                        R.layout.simple_list_item_1,arreglo)
+                    binding.lista.setOnItemClickListener { adapterView, view, posicion, l ->
+                        dialogoEliminaActualiza(posicion)
+                    }
+                }catch (err:NullPointerException){
 
-                binding.lista.adapter= ArrayAdapter<String>(requireContext(),
-                    R.layout.simple_list_item_1,arreglo)
-                binding.lista.setOnItemClickListener { adapterView, view, posicion, l ->
-                    dialogoEliminaActualiza(posicion)
                 }
             }
 
